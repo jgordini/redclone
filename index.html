@@ -36,6 +36,12 @@
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- Profanity Filter (bad-words) -->
+    <script src="https://cdn.jsdelivr.net/npm/bad-words@3.0.4/lib/bad-words.min.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -73,6 +79,17 @@
                     maxlength="500"
                     required
                 ></textarea>
+
+                <!-- Cloudflare Turnstile CAPTCHA -->
+                <div class="tw-mb-3">
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="YOUR_TURNSTILE_SITE_KEY_HERE"
+                        data-theme="light"
+                        data-size="normal"
+                    ></div>
+                </div>
+
                 <div class="tw-flex tw-justify-between tw-items-center">
                     <span id="charCount" class="tw-text-xs tw-text-gray-500">0 / 500</span>
                     <button

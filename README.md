@@ -10,6 +10,8 @@ A single-board anonymous idea submission and voting platform built with vanilla 
 - **Real-time Updates**: See new ideas appear instantly
 - **Responsive Design**: Works on desktop, tablet, and mobile
 - **UAB Branding**: Professional styling with UAB colors and typography
+- **CAPTCHA Protection**: Cloudflare Turnstile prevents bot spam
+- **Profanity Filter**: Automatic filtering using bad-words library
 
 ## Tech Stack
 
@@ -133,7 +135,20 @@ ALTER PUBLICATION supabase_realtime ADD TABLE ideas;
 
 **Note**: In most recent Supabase projects, realtime is automatically enabled for all tables. You can verify by checking if broadcasts work when testing the app.
 
-### 6. Configure the Application
+### 6. Set Up Cloudflare Turnstile (CAPTCHA)
+
+1. Go to [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/)
+2. Sign up/login to Cloudflare
+3. Create a new Turnstile site:
+   - **Site name**: "Idea Board" (or whatever you prefer)
+   - **Domain**: Your deployment domain (e.g., `your-app.netlify.app`) or `localhost` for testing
+   - **Widget mode**: Managed
+4. Copy your **Site Key**
+5. Open `index.html` and replace `YOUR_TURNSTILE_SITE_KEY_HERE` with your actual site key (around line 93)
+
+**Note**: For local development, add `localhost` as an allowed domain in Turnstile settings.
+
+### 7. Configure the Application
 
 1. Clone or download this repository
 2. Open `js/config.js`
@@ -149,7 +164,7 @@ You can find these values in your Supabase project under **Settings > API**:
 - **Publishable key**: Copy the "default" publishable key (starts with `sb_publishable_`)
   - *Note*: If you see "anon key" instead (legacy format), use that - it works the same way
 
-### 7. Run the Application
+### 8. Run the Application
 
 Since this is a static site, you need a local server to run it:
 

@@ -75,3 +75,49 @@ function hasVoted(ideaId) {
     const votedIdeas = getVotedIdeas();
     return votedIdeas.has(ideaId);
 }
+
+/**
+ * Profanity Filter using bad-words library
+ * Initialized after library loads
+ */
+let profanityFilter = null;
+
+function initProfanityFilter() {
+    if (typeof Filter !== 'undefined') {
+        profanityFilter = new Filter();
+        console.log('Profanity filter initialized');
+    } else {
+        console.warn('bad-words library not loaded yet');
+    }
+}
+
+function containsProfanity(text) {
+    if (!profanityFilter) {
+        initProfanityFilter();
+    }
+    return profanityFilter ? profanityFilter.isProfane(text) : false;
+}
+
+function cleanProfanity(text) {
+    if (!profanityFilter) {
+        initProfanityFilter();
+    }
+    return profanityFilter ? profanityFilter.clean(text) : text;
+}
+
+/**
+ * Get Cloudflare Turnstile token
+ */
+function getTurnstileToken() {
+    const turnstileElement = document.querySelector('.cf-turnstile');
+    if (turnstileElement) {
+        const response = turnstile.getResponse(turnstileElement);
+        return response;
+    }
+    return null;
+}
+
+// Make functions globally accessible
+window.containsProfanity = containsProfanity;
+window.cleanProfanity = cleanProfanity;
+window.getTurnstileToken = getTurnstileToken;

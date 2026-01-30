@@ -14,6 +14,14 @@ async function initApp() {
     voterId = getVoterId();
     console.log('Voter ID:', voterId);
 
+    // Initialize profanity filter
+    if (typeof Filter !== 'undefined') {
+        initProfanityFilter();
+    } else {
+        // Wait for bad-words library to load
+        setTimeout(initProfanityFilter, 500);
+    }
+
     // Set up form handlers
     setupFormHandlers();
 
@@ -85,6 +93,19 @@ async function handleIdeaSubmission() {
         return;
     }
 
+    // Check for profanity
+    if (containsProfanity(content)) {
+        showError('Your submission contains inappropriate language. Please remove profanity and try again.');
+        return;
+    }
+
+    // Verify Cloudflare Turnstile CAPTCHA
+    const turnstileToken = getTurnstileToken();
+    if (!turnstileToken) {
+        showError('Please complete the CAPTCHA verification.');
+        return;
+    }
+
     // Disable submit button to prevent double submissions
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin tw-mr-2"></i> Submitting...';
@@ -110,6 +131,11 @@ async function handleIdeaSubmission() {
         textarea.value = '';
         updateCharCount(0, 500);
 
+        // Reset Turnstile CAPTCHA
+        if (typeof turnstile !== 'undefined') {
+            turnstile.reset();
+        }
+
         // Show success message
         showSuccess('Your idea has been submitted!');
 
@@ -119,10 +145,15 @@ async function handleIdeaSubmission() {
     } catch (error) {
         console.error('Error submitting idea:', error);
         showError('Failed to submit idea. Please check your internet connection.');
+
+        // Reset Turnstile CAPTCHA on error
+        if (typeof turnstile !== 'undefined') {
+            turnstile.reset();
+        }
     } finally {
         // Re-enable submit button
         submitButton.disabled = false;
-        submitButton.innerHTML = 'Submit Idea <i class="fas fa-arrow-right tw-ml-2"></i>';
+        submitButton.innerHTML = 'Post';
     }
 }
 
