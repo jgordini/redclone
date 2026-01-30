@@ -244,6 +244,130 @@ redclone/
 ### Supabase Storage
 Upload the files to Supabase Storage and enable public access.
 
+## Deploying to Joomla
+
+You can embed this idea board into a Joomla website using several methods:
+
+### Option 1: iFrame Embed (Easiest)
+
+1. **Deploy the app** to Netlify/Vercel first (get a live URL)
+2. **Create a new Joomla article**
+3. **Switch to HTML/Code editor** (toggle off the WYSIWYG editor)
+4. **Paste this code**:
+
+```html
+<iframe
+    src="https://your-app.netlify.app"
+    width="100%"
+    height="900px"
+    frameborder="0"
+    style="border: none; min-height: 900px;"
+></iframe>
+```
+
+5. **Set Page Class to `layout-wide`** (Menu Item → Page Display Options → Page Class)
+   - This removes the sidebar for full-width display
+
+**Pros**: Simple, keeps app separate, easy updates
+**Cons**: iFrame limitations (scrolling, SEO)
+
+### Option 2: Direct HTML Embed (Best Integration)
+
+1. **Create a new Joomla article**
+2. **Set Page Class to `layout-wide`** (full width, no sidebar)
+3. **Switch to HTML/Code editor**
+4. **Copy the entire HTML structure** from `index.html` and paste into the article
+5. **The article should include**:
+
+```html
+<!-- CDN Libraries -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        prefix: 'tw-',
+        theme: {
+            extend: {
+                colors: {
+                    'uab-green': '#1A5632',
+                    'dragons-lair-green': '#033319',
+                    'campus-green': '#90D408',
+                    'loyal-yellow': '#FDB913',
+                    'smoke-gray': '#808285',
+                    'smoke-gray-7': '#F5F5F5',
+                    'smoke-gray-15': '#DADADA',
+                }
+            }
+        }
+    }
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<!-- Inline CSS -->
+<style>
+/* Paste contents of css/style.css here */
+</style>
+
+<!-- App HTML -->
+<div class="tw-bg-gray-100 tw-min-h-screen">
+    <div class="tw-max-w-3xl tw-mx-auto tw-px-4 tw-py-6">
+        <!-- Paste all HTML from index.html body here -->
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+// Paste contents of js/config.js here
+// Paste contents of js/ui.js here
+// Paste contents of js/app.js here
+</script>
+```
+
+**Pros**: Seamless integration, no iframe issues, full control
+**Cons**: More complex, harder to update
+
+### Option 3: Custom HTML Module (Sidebar/Module Position)
+
+1. **Go to Extensions → Modules → New**
+2. **Select "Custom HTML"**
+3. **Paste the embedded code** (same as Option 2)
+4. **Select module position** (e.g., `top`, `upper`, `lower`, `bottom`)
+5. **Publish the module**
+6. **Set "Prepare Content" to Yes** (Advanced tab)
+
+**Module Positions**:
+- `top` - Full-width above content and sidebars
+- `upper` - Above content only
+- `lower` - Below content only
+- `bottom` - Full-width below content and sidebars
+
+**Pros**: Reusable across multiple pages, flexible positioning
+**Cons**: Limited width in some positions
+
+### Option 4: Component Extension (Advanced)
+
+Create a custom Joomla component for professional integration. See Joomla documentation for component development.
+
+### UAB Joomla Sites
+
+If you're using the UAB Joomla template:
+
+1. **Use Option 2** (Direct HTML Embed) for best results
+2. **Page Class**: Set to `layout-wide` for full-width pages
+3. **UAB Styling**: The app already uses UAB brand colors and will integrate seamlessly
+4. **Menu Item Settings**:
+   - Title: "Idea Board" (or custom)
+   - Alias: `idea-board`
+   - Page Class: `layout-wide`
+
+### Important Notes
+
+- **Update Supabase credentials** in the embedded JavaScript code
+- **Update Turnstile site key** to match your Joomla domain
+- **Test thoroughly** after embedding
+- **Clear Joomla cache** after making changes (System → Clear Cache)
+
 ## Customization
 
 ### Change Colors
