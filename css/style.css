@@ -50,23 +50,6 @@ html {
     font-weight: 700;
 }
 
-/* Reordering animation - subtle */
-.idea-reordering {
-    animation: pulse-reorder 0.8s ease-out;
-}
-
-@keyframes pulse-reorder {
-    0%, 100% {
-        background-color: #ffffff;
-        border-color: #e5e7eb;
-    }
-    50% {
-        background-color: #f9fdf7;
-        border-color: #e8f0e0;
-        box-shadow: 0 0 0 1px rgba(144, 212, 8, 0.12);
-    }
-}
-
 /* Upvote button base styles */
 .upvote-btn {
     transition: all 0.15s ease;
@@ -120,36 +103,6 @@ textarea:focus {
     font-weight: 600;
 }
 
-/* Loading animation for spinner */
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.fa-spinner {
-    animation: spin 1s linear infinite;
-}
-
-/* Fade in animation for new ideas - subtle */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fade-in {
-    animation: fadeIn 0.3s ease-out;
-}
-
 /* Custom scrollbar for textarea */
 textarea::-webkit-scrollbar {
     width: 8px;
@@ -191,7 +144,6 @@ textarea::-webkit-scrollbar-thumb:hover {
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    animation: fadeIn 0.3s ease-out;
 }
 
 .error-message i {
@@ -206,7 +158,6 @@ textarea::-webkit-scrollbar-thumb:hover {
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    animation: fadeIn 0.3s ease-out;
 }
 
 .success-message i {
