@@ -29,9 +29,10 @@ html {
     z-index: 1;
 }
 
-/* Ensure smooth reordering */
+/* Smooth reordering animation */
 #ideasList .idea-card.idea-reordering {
     z-index: 10;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Reddit-style compact design */

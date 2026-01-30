@@ -144,17 +144,13 @@ function renderIdeasList(ideas, animate = false) {
                     void card.offsetHeight;
 
                     // Animate to final position
-                    requestAnimationFrame(() => {
-                        card.style.transform = '';
-                        card.style.transition = 'transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    card.classList.add('idea-reordering');
+                    card.style.transform = '';
 
-                        // Add pulse effect
-                        card.classList.add('idea-reordering');
-                        setTimeout(() => {
-                            card.classList.remove('idea-reordering');
-                            card.style.transition = '';
-                        }, 1200);
-                    });
+                    // Clean up after animation
+                    setTimeout(() => {
+                        card.classList.remove('idea-reordering');
+                    }, 500);
                 }
             });
         });
