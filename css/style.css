@@ -18,11 +18,20 @@ html {
 /* Prevent flash during reordering */
 #ideasList {
     position: relative;
+    min-height: 100px; /* Prevent layout shift */
 }
 
 #ideasList .idea-card {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure smooth reordering */
+#ideasList .idea-card.idea-reordering {
+    z-index: 10;
 }
 
 /* Reordering animation */

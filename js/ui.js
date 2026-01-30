@@ -92,71 +92,69 @@ function renderIdeasList(ideas, animate = false) {
     emptyState.classList.add('tw-hidden');
 
     if (animate && ideasList.children.length > 0) {
-        // FLIP animation technique
-        // First: Get current positions and store elements
+        // FLIP animation technique - NO DOM clearing!
+        // First: Get current positions
         const oldPositions = new Map();
-        const existingCards = new Map();
+        const existingElements = new Map();
 
         Array.from(ideasList.children).forEach(card => {
             const ideaId = card.dataset.ideaId;
-            const rect = card.getBoundingClientRect();
-            oldPositions.set(ideaId, rect);
-            existingCards.set(ideaId, card.cloneNode(true));
+            oldPositions.set(ideaId, card.getBoundingClientRect());
+            existingElements.set(ideaId, card);
         });
 
-        // Last: Reorder existing DOM elements instead of replacing innerHTML
-        const fragment = document.createDocumentFragment();
-        ideas.forEach(idea => {
-            const existingCard = existingCards.get(idea.id);
-            if (existingCard) {
-                // Update vote count in existing card
-                const voteCountEl = existingCard.querySelector('.vote-count');
-                if (voteCountEl) {
+        // Last: Reorder DOM elements without clearing
+        const orderedIds = ideas.map(idea => idea.id);
+
+        orderedIds.forEach((ideaId, newIndex) => {
+            const card = existingElements.get(ideaId);
+            if (card) {
+                // Update vote count if it changed
+                const idea = ideas[newIndex];
+                const voteCountEl = card.querySelector('.vote-count');
+                if (voteCountEl && idea) {
                     voteCountEl.textContent = idea.vote_count || 0;
                 }
-                fragment.appendChild(existingCard);
-            } else {
-                // New card, create it
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = renderIdeaCard(idea);
-                fragment.appendChild(tempDiv.firstElementChild);
+
+                // Move card to correct position in DOM (this doesn't cause reflow yet)
+                if (ideasList.children[newIndex] !== card) {
+                    ideasList.insertBefore(card, ideasList.children[newIndex] || null);
+                }
             }
         });
 
-        // Clear and append in new order
-        ideasList.innerHTML = '';
-        ideasList.appendChild(fragment);
-
         // Invert & Play: Calculate and animate differences
         requestAnimationFrame(() => {
-            Array.from(ideasList.children).forEach(card => {
-                const ideaId = card.dataset.ideaId;
+            orderedIds.forEach(ideaId => {
+                const card = existingElements.get(ideaId);
+                if (!card) return;
+
                 const oldPos = oldPositions.get(ideaId);
+                if (!oldPos) return;
 
-                if (oldPos) {
-                    const newPos = card.getBoundingClientRect();
-                    const deltaY = oldPos.top - newPos.top;
+                const newPos = card.getBoundingClientRect();
+                const deltaY = oldPos.top - newPos.top;
 
-                    if (Math.abs(deltaY) > 1) { // Only animate if moved more than 1px
-                        // Apply inverse transform
-                        card.style.transform = `translateY(${deltaY}px)`;
-                        card.style.transition = 'none';
-                        card.style.opacity = '1'; // Ensure visible
+                if (Math.abs(deltaY) > 1) {
+                    // Apply inverse transform (without transition)
+                    card.style.transform = `translateY(${deltaY}px)`;
+                    card.style.transition = 'none';
 
-                        // Force reflow
-                        card.offsetHeight;
+                    // Force reflow
+                    void card.offsetHeight;
 
-                        // Play animation
+                    // Animate to final position
+                    requestAnimationFrame(() => {
                         card.style.transform = '';
                         card.style.transition = 'transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-                        // Add a subtle pulse effect to the moved card
+                        // Add pulse effect
                         card.classList.add('idea-reordering');
                         setTimeout(() => {
                             card.classList.remove('idea-reordering');
                             card.style.transition = '';
                         }, 1200);
-                    }
+                    });
                 }
             });
         });
