@@ -80,23 +80,41 @@ function hasVoted(ideaId) {
  * Profanity Filter using leo-profanity library
  */
 function initProfanityFilter() {
+    console.log('initProfanityFilter called');
+    console.log('LeoProfanity available?', typeof LeoProfanity);
+    console.log('window.LeoProfanity available?', typeof window.LeoProfanity);
+
     if (typeof LeoProfanity !== 'undefined') {
         // Add extra words if needed
         LeoProfanity.add(['damn', 'crap']);
-        console.log('Profanity filter initialized with', LeoProfanity.list().length, 'words');
+        console.log('✓ Profanity filter initialized with', LeoProfanity.list().length, 'words');
+        return true;
+    } else if (typeof window.LeoProfanity !== 'undefined') {
+        window.LeoProfanity.add(['damn', 'crap']);
+        console.log('✓ Profanity filter initialized (via window) with', window.LeoProfanity.list().length, 'words');
         return true;
     } else {
-        console.warn('LeoProfanity library not loaded yet');
+        console.error('✗ LeoProfanity library not loaded!');
         return false;
     }
 }
 
 function containsProfanity(text) {
-    if (typeof LeoProfanity === 'undefined') {
-        console.error('Profanity filter not loaded');
+    const profanity = window.LeoProfanity || LeoProfanity;
+
+    if (typeof profanity === 'undefined') {
+        console.error('✗ Profanity filter not loaded - allowing submission');
         return false; // Allow submission if filter fails to load
     }
-    return LeoProfanity.check(text);
+
+    const result = profanity.check(text);
+    console.log('Profanity check result:', result, 'for text:', text.substring(0, 100));
+
+    if (result) {
+        console.log('Found profane words:', profanity.list().filter(word => text.toLowerCase().includes(word)));
+    }
+
+    return result;
 }
 
 function cleanProfanity(text) {
