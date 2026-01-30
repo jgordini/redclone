@@ -81,16 +81,22 @@ html {
 }
 
 .upvote-btn:active:not(:disabled) {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .upvote-btn:disabled {
     cursor: default;
 }
 
-.upvote-btn:hover:not(:disabled) {
+/* Hover effect for unvoted arrows only */
+.upvote-btn:not(:disabled):hover {
     background-color: rgba(144, 212, 8, 0.1);
     border-radius: 4px;
+}
+
+/* Voted state - green circle with white arrow */
+.upvote-btn:disabled {
+    background-color: #90D408;
 }
 
 /* Textarea custom styling */

@@ -41,14 +41,14 @@ function renderIdeaCard(idea) {
     const cardHtml = `
         <div class="tw-bg-white tw-border tw-border-gray-200 hover:tw-border-gray-300 tw-mb-2 tw-flex idea-card fade-in" data-idea-id="${idea.id}">
             <!-- Upvote section -->
-            <div class="tw-flex tw-flex-col tw-items-center tw-bg-gray-50 tw-px-3 tw-py-2 upvote-section tw-border-r tw-border-gray-200">
+            <div class="tw-flex tw-flex-col tw-items-center tw-px-3 tw-py-2 upvote-section">
                 <button
-                    class="upvote-btn tw-text-gray-400 hover:tw-text-campus-green tw-transition-colors tw-p-1 ${voted ? 'tw-text-campus-green' : ''}"
+                    class="upvote-btn tw-transition-all ${voted ? 'tw-bg-campus-green tw-text-white tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center' : 'tw-text-gray-400 hover:tw-text-campus-green tw-p-1'}"
                     onclick="handleUpvote('${idea.id}')"
                     ${voted ? 'disabled' : ''}
                     aria-label="Upvote this idea"
                 >
-                    <i class="fas fa-arrow-up tw-text-lg"></i>
+                    <i class="${voted ? 'fas' : 'far'} fa-arrow-up tw-text-base"></i>
                 </button>
                 <span class="tw-text-xs tw-font-bold tw-mt-1 vote-count ${voted ? 'tw-text-campus-green' : 'tw-text-gray-700'}">${voteCount}</span>
             </div>
