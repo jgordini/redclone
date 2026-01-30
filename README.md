@@ -11,7 +11,7 @@ A single-board anonymous idea submission and voting platform built with vanilla 
 - **Responsive Design**: Works on desktop, tablet, and mobile
 - **UAB Branding**: Professional styling with UAB colors and typography
 - **CAPTCHA Protection**: Cloudflare Turnstile prevents bot spam
-- **Profanity Filter**: Automatic filtering using bad-words library
+- **Profanity Filter**: Automatic filtering using leo-profanity library
 
 ## Tech Stack
 

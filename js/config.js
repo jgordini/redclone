@@ -77,32 +77,33 @@ function hasVoted(ideaId) {
 }
 
 /**
- * Profanity Filter using bad-words library
- * Initialized after library loads
+ * Profanity Filter using leo-profanity library
  */
-let profanityFilter = null;
-
 function initProfanityFilter() {
-    if (typeof Filter !== 'undefined') {
-        profanityFilter = new Filter();
-        console.log('Profanity filter initialized');
+    if (typeof LeoProfanity !== 'undefined') {
+        // Add extra words if needed
+        LeoProfanity.add(['damn', 'crap']);
+        console.log('Profanity filter initialized with', LeoProfanity.list().length, 'words');
+        return true;
     } else {
-        console.warn('bad-words library not loaded yet');
+        console.warn('LeoProfanity library not loaded yet');
+        return false;
     }
 }
 
 function containsProfanity(text) {
-    if (!profanityFilter) {
-        initProfanityFilter();
+    if (typeof LeoProfanity === 'undefined') {
+        console.error('Profanity filter not loaded');
+        return false; // Allow submission if filter fails to load
     }
-    return profanityFilter ? profanityFilter.isProfane(text) : false;
+    return LeoProfanity.check(text);
 }
 
 function cleanProfanity(text) {
-    if (!profanityFilter) {
-        initProfanityFilter();
+    if (typeof LeoProfanity === 'undefined') {
+        return text;
     }
-    return profanityFilter ? profanityFilter.clean(text) : text;
+    return LeoProfanity.clean(text);
 }
 
 /**

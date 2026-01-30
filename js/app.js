@@ -15,11 +15,11 @@ async function initApp() {
     console.log('Voter ID:', voterId);
 
     // Initialize profanity filter
-    if (typeof Filter !== 'undefined') {
+    if (typeof LeoProfanity !== 'undefined') {
         initProfanityFilter();
     } else {
-        // Wait for bad-words library to load
-        setTimeout(initProfanityFilter, 500);
+        // Wait for leo-profanity library to load
+        setTimeout(initProfanityFilter, 1000);
     }
 
     // Set up form handlers
@@ -94,7 +94,10 @@ async function handleIdeaSubmission() {
     }
 
     // Check for profanity
-    if (containsProfanity(content)) {
+    const hasProfanity = containsProfanity(content);
+    console.log('Profanity check:', hasProfanity, 'for text:', content.substring(0, 50));
+
+    if (hasProfanity) {
         showError('Your submission contains inappropriate language. Please remove profanity and try again.');
         return;
     }
