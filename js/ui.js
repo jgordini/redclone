@@ -122,14 +122,14 @@ function renderIdeasList(ideas, animate = false) {
 
                         // Play animation
                         card.style.transform = '';
-                        card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        card.style.transition = 'transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
                         // Add a subtle pulse effect to the moved card
                         card.classList.add('idea-reordering');
                         setTimeout(() => {
                             card.classList.remove('idea-reordering');
                             card.style.transition = '';
-                        }, 400);
+                        }, 1200);
                     }
                 }
             });

@@ -163,7 +163,7 @@ async function handleUpvote(ideaId) {
         markIdeaAsVoted(ideaId);
 
         // Wait a moment for the trigger to update vote_count
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Reload all ideas to trigger re-sort with animation
         await loadIdeas(true); // Pass true to indicate this is a re-sort after vote
