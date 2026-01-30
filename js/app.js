@@ -26,10 +26,13 @@ async function initApp() {
 
 /**
  * Load all ideas from Supabase
+ * @param {boolean} isReSort - If true, animate position changes
  */
-async function loadIdeas() {
+async function loadIdeas(isReSort = false) {
     try {
-        showLoadingState();
+        if (!isReSort) {
+            showLoadingState();
+        }
 
         const { data, error } = await supabase
             .from('ideas')
@@ -42,7 +45,7 @@ async function loadIdeas() {
             return;
         }
 
-        renderIdeasList(data);
+        renderIdeasList(data, isReSort);
     } catch (error) {
         console.error('Error loading ideas:', error);
         showError('Failed to load ideas. Please check your internet connection.');
@@ -159,19 +162,11 @@ async function handleUpvote(ideaId) {
         // Mark as voted locally
         markIdeaAsVoted(ideaId);
 
-        // Fetch updated idea to get new vote count
-        const { data: updatedIdea, error: fetchError } = await supabase
-            .from('ideas')
-            .select('vote_count')
-            .eq('id', ideaId)
-            .single();
+        // Wait a moment for the trigger to update vote_count
+        await new Promise(resolve => setTimeout(resolve, 300));
 
-        if (fetchError) {
-            console.error('Error fetching updated vote count:', fetchError);
-        } else {
-            // Update UI with new vote count
-            updateVoteCount(ideaId, updatedIdea.vote_count);
-        }
+        // Reload all ideas to trigger re-sort with animation
+        await loadIdeas(true); // Pass true to indicate this is a re-sort after vote
 
     } catch (error) {
         console.error('Error voting:', error);

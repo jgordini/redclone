@@ -14,6 +14,22 @@ html {
     transform: translateY(-2px);
 }
 
+/* Reordering animation */
+.idea-reordering {
+    animation: pulse-reorder 0.4s ease-out;
+}
+
+@keyframes pulse-reorder {
+    0%, 100% {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    50% {
+        box-shadow: 0 10px 25px -3px rgba(144, 212, 8, 0.3), 0 4px 6px -2px rgba(144, 212, 8, 0.2);
+        border-left-color: #90D408;
+        border-left-width: 6px;
+    }
+}
+
 /* Upvote button active state */
 .upvote-btn {
     transition: all 0.2s ease;

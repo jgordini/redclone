@@ -68,8 +68,10 @@ function renderIdeaCard(idea) {
 
 /**
  * Render list of ideas
+ * @param {Array} ideas - Array of idea objects
+ * @param {boolean} animate - Whether to animate position changes
  */
-function renderIdeasList(ideas) {
+function renderIdeasList(ideas, animate = false) {
     const ideasList = document.getElementById('ideasList');
     const loadingState = document.getElementById('loadingState');
     const emptyState = document.getElementById('emptyState');
@@ -84,9 +86,58 @@ function renderIdeasList(ideas) {
         return;
     }
 
-    // Hide empty state and render ideas
+    // Hide empty state
     emptyState.classList.add('tw-hidden');
-    ideasList.innerHTML = ideas.map(idea => renderIdeaCard(idea)).join('');
+
+    if (animate && ideasList.children.length > 0) {
+        // FLIP animation technique
+        // First: Get current positions
+        const oldPositions = new Map();
+        Array.from(ideasList.children).forEach(card => {
+            const ideaId = card.dataset.ideaId;
+            const rect = card.getBoundingClientRect();
+            oldPositions.set(ideaId, rect);
+        });
+
+        // Last: Update DOM with new order
+        ideasList.innerHTML = ideas.map(idea => renderIdeaCard(idea)).join('');
+
+        // Invert & Play: Calculate and animate differences
+        requestAnimationFrame(() => {
+            Array.from(ideasList.children).forEach(card => {
+                const ideaId = card.dataset.ideaId;
+                const oldPos = oldPositions.get(ideaId);
+
+                if (oldPos) {
+                    const newPos = card.getBoundingClientRect();
+                    const deltaY = oldPos.top - newPos.top;
+
+                    if (deltaY !== 0) {
+                        // Apply inverse transform
+                        card.style.transform = `translateY(${deltaY}px)`;
+                        card.style.transition = 'none';
+
+                        // Force reflow
+                        card.offsetHeight;
+
+                        // Play animation
+                        card.style.transform = '';
+                        card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+                        // Add a subtle pulse effect to the moved card
+                        card.classList.add('idea-reordering');
+                        setTimeout(() => {
+                            card.classList.remove('idea-reordering');
+                            card.style.transition = '';
+                        }, 400);
+                    }
+                }
+            });
+        });
+    } else {
+        // No animation, just render
+        ideasList.innerHTML = ideas.map(idea => renderIdeaCard(idea)).join('');
+    }
 }
 
 /**
