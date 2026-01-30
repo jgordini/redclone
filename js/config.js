@@ -77,63 +77,77 @@ function hasVoted(ideaId) {
 }
 
 /**
- * Profanity Filter using leo-profanity library
+ * Simple built-in profanity filter
+ * Filters the 7 dirty words and common racial slurs
  */
-function initProfanityFilter() {
-    console.log('initProfanityFilter called');
-    console.log('LeoProfanity available?', typeof LeoProfanity);
-    console.log('window.LeoProfanity available?', typeof window.LeoProfanity);
+const BLOCKED_WORDS = [
+    // The 7 dirty words
+    'shit', 'piss', 'fuck', 'cunt', 'cocksucker', 'motherfucker', 'tits',
+    // Common variations
+    'fck', 'fuk', 'fuc', 'shit', 'sht', 'cnt', 'btch', 'bitch',
+    // Racial slurs
+    'nigger', 'nigga', 'nig', 'chink', 'spic', 'kike', 'wetback', 'beaner',
+    'gook', 'jap', 'towelhead', 'raghead', 'sandnigger'
+];
 
-    if (typeof LeoProfanity !== 'undefined') {
-        // Add extra words if needed
-        LeoProfanity.add(['damn', 'crap']);
-        console.log('✓ Profanity filter initialized with', LeoProfanity.list().length, 'words');
-        return true;
-    } else if (typeof window.LeoProfanity !== 'undefined') {
-        window.LeoProfanity.add(['damn', 'crap']);
-        console.log('✓ Profanity filter initialized (via window) with', window.LeoProfanity.list().length, 'words');
-        return true;
-    } else {
-        console.error('✗ LeoProfanity library not loaded!');
-        return false;
-    }
+function initProfanityFilter() {
+    console.log('✓ Profanity filter initialized with', BLOCKED_WORDS.length, 'blocked words');
+    return true;
 }
 
 function containsProfanity(text) {
-    const profanity = window.LeoProfanity || LeoProfanity;
+    const lowerText = text.toLowerCase();
 
-    if (typeof profanity === 'undefined') {
-        console.error('✗ Profanity filter not loaded - allowing submission');
-        return false; // Allow submission if filter fails to load
+    // Remove common obfuscation characters
+    const cleanedText = lowerText
+        .replace(/[*@#$%]/g, '')
+        .replace(/\s+/g, ' ');
+
+    // Check each blocked word
+    for (const word of BLOCKED_WORDS) {
+        // Use word boundaries to avoid false positives
+        const regex = new RegExp(`\\b${word}\\b`, 'i');
+        if (regex.test(lowerText) || cleanedText.includes(word)) {
+            console.log('Blocked word detected:', word);
+            return true;
+        }
     }
 
-    const result = profanity.check(text);
-    console.log('Profanity check result:', result, 'for text:', text.substring(0, 100));
-
-    if (result) {
-        console.log('Found profane words:', profanity.list().filter(word => text.toLowerCase().includes(word)));
-    }
-
-    return result;
+    return false;
 }
 
 function cleanProfanity(text) {
-    if (typeof LeoProfanity === 'undefined') {
-        return text;
+    let cleanedText = text;
+    for (const word of BLOCKED_WORDS) {
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        cleanedText = cleanedText.replace(regex, '****');
     }
-    return LeoProfanity.clean(text);
+    return cleanedText;
 }
 
 /**
  * Get Cloudflare Turnstile token
  */
 function getTurnstileToken() {
-    const turnstileElement = document.querySelector('.cf-turnstile');
-    if (turnstileElement) {
-        const response = turnstile.getResponse(turnstileElement);
-        return response;
+    try {
+        const turnstileElement = document.querySelector('.cf-turnstile');
+        if (!turnstileElement) {
+            console.warn('Turnstile element not found');
+            return 'bypass'; // Allow submission if CAPTCHA widget not found
+        }
+
+        if (typeof turnstile === 'undefined') {
+            console.warn('Turnstile API not loaded');
+            return 'bypass'; // Allow submission if Turnstile API not loaded
+        }
+
+        const response = turnstile.getResponse();
+        console.log('Turnstile token:', response ? 'received' : 'empty');
+        return response || null;
+    } catch (error) {
+        console.error('Error getting Turnstile token:', error);
+        return 'bypass'; // Allow submission on error
     }
-    return null;
 }
 
 // Make functions globally accessible

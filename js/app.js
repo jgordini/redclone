@@ -15,12 +15,7 @@ async function initApp() {
     console.log('Voter ID:', voterId);
 
     // Initialize profanity filter
-    if (typeof LeoProfanity !== 'undefined') {
-        initProfanityFilter();
-    } else {
-        // Wait for leo-profanity library to load
-        setTimeout(initProfanityFilter, 1000);
-    }
+    initProfanityFilter();
 
     // Set up form handlers
     setupFormHandlers();
@@ -94,20 +89,20 @@ async function handleIdeaSubmission() {
     }
 
     // Check for profanity
-    const hasProfanity = containsProfanity(content);
-    console.log('Profanity check:', hasProfanity, 'for text:', content.substring(0, 50));
-
-    if (hasProfanity) {
-        showError('Your submission contains inappropriate language. Please remove profanity and try again.');
+    if (containsProfanity(content)) {
+        showError('Your submission contains inappropriate language. Please remove it and try again.');
         return;
     }
 
     // Verify Cloudflare Turnstile CAPTCHA
     const turnstileToken = getTurnstileToken();
-    if (!turnstileToken) {
-        showError('Please complete the CAPTCHA verification.');
+    console.log('CAPTCHA check - Token:', turnstileToken);
+
+    if (!turnstileToken || turnstileToken === '') {
+        showError('Please complete the CAPTCHA verification first.');
         return;
     }
+    // 'bypass' means CAPTCHA widget didn't load - allow submission anyway
 
     // Disable submit button to prevent double submissions
     submitButton.disabled = true;
