@@ -82,7 +82,7 @@
     <!-- UAB top banner -->
     <header
       class="tw-w-full tw-py-3 tw-px-4 tw-flex tw-items-center"
-      style="background-color: rgb(26, 86, 50);"
+      style="background-color: rgb(26, 86, 50)"
     >
       <img
         src="uablogo.svg"
@@ -100,7 +100,7 @@
           Idea Board
         </h1>
         <p class="tw-text-xs tw-text-gray-600 tw-mt-1">
-          Share and vote on ideas anonymously
+          Share improvements and promote solutions
         </p>
       </div>
 
@@ -117,16 +117,6 @@
             maxlength="500"
             required
           ></textarea>
-
-          <!-- Cloudflare Turnstile CAPTCHA -->
-          <div class="tw-mb-3">
-            <div
-              class="cf-turnstile"
-              data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
-              data-theme="light"
-              data-size="normal"
-            ></div>
-          </div>
 
           <div class="tw-flex tw-justify-between tw-items-center">
             <span id="charCount" class="tw-text-xs tw-text-gray-500"
@@ -173,6 +163,19 @@
         <!-- Ideas list (populated by JavaScript) -->
         <div id="ideasList"></div>
       </div>
+    </div>
+
+    <!-- Cloudflare Turnstile - fixed bottom right -->
+    <div
+      class="tw-fixed tw-bottom-4 tw-right-4 tw-z-50"
+      aria-label="Security verification"
+    >
+      <div
+        class="cf-turnstile"
+        data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
+        data-theme="light"
+        data-size="normal"
+      ></div>
     </div>
 
     <!-- JavaScript -->
