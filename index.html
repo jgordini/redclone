@@ -52,34 +52,34 @@
         }
     </style>
 </head>
-<body class="tw-bg-smoke-gray-7 tw-min-h-screen">
-    <div class="tw-max-w-4xl tw-mx-auto tw-px-6 tw-py-12">
+<body class="tw-bg-gray-100 tw-min-h-screen">
+    <div class="tw-max-w-3xl tw-mx-auto tw-px-4 tw-py-6">
         <!-- Header -->
-        <div class="tw-bg-white tw-p-8 tw-rounded-lg tw-shadow-md tw-mb-8">
-            <h1 class="tw-text-uab-green tw-text-4xl tw-font-bold tw-mb-2 font-kulturista">
+        <div class="tw-bg-white tw-border-b tw-border-gray-300 tw-px-6 tw-py-4 tw-mb-4">
+            <h1 class="tw-text-uab-green tw-text-2xl tw-font-bold">
                 Idea Board
             </h1>
-            <p class="tw-text-smoke-gray">Share and vote on ideas anonymously</p>
+            <p class="tw-text-xs tw-text-gray-600 tw-mt-1">Share and vote on ideas anonymously</p>
         </div>
 
         <!-- Submission Form -->
-        <div class="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md tw-mb-8">
+        <div class="tw-bg-white tw-border tw-border-gray-200 tw-p-4 tw-mb-4">
             <form id="ideaForm">
                 <textarea
                     id="ideaInput"
-                    class="tw-w-full tw-p-4 tw-border tw-border-smoke-gray-15 tw-rounded tw-mb-4 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-uab-green focus:tw-border-transparent"
-                    placeholder="Share your idea..."
-                    rows="4"
+                    class="tw-w-full tw-p-3 tw-border tw-border-gray-300 tw-rounded tw-text-sm tw-mb-3 focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-uab-green focus:tw-border-uab-green"
+                    placeholder="What's on your mind?"
+                    rows="3"
                     maxlength="500"
                     required
                 ></textarea>
                 <div class="tw-flex tw-justify-between tw-items-center">
-                    <span id="charCount" class="tw-text-sm tw-text-smoke-gray">0 / 500</span>
+                    <span id="charCount" class="tw-text-xs tw-text-gray-500">0 / 500</span>
                     <button
                         type="submit"
-                        class="tw-bg-uab-green tw-text-white tw-px-6 tw-py-3 tw-rounded hover:tw-bg-dragons-lair-green tw-transition-colors tw-font-medium"
+                        class="tw-bg-uab-green tw-text-white tw-px-4 tw-py-2 tw-rounded tw-text-sm tw-font-semibold hover:tw-bg-dragons-lair-green tw-transition-colors"
                     >
-                        Submit Idea <i class="fas fa-arrow-right tw-ml-2"></i>
+                        Post
                     </button>
                 </div>
             </form>
@@ -88,15 +88,15 @@
         <!-- Ideas List -->
         <div id="ideasContainer">
             <!-- Loading state -->
-            <div id="loadingState" class="tw-bg-white tw-p-8 tw-rounded-lg tw-shadow-md tw-text-center">
-                <i class="fas fa-spinner fa-spin tw-text-campus-green tw-text-3xl"></i>
-                <p class="tw-text-smoke-gray tw-mt-4">Loading ideas...</p>
+            <div id="loadingState" class="tw-bg-white tw-border tw-border-gray-200 tw-p-8 tw-text-center">
+                <i class="fas fa-spinner fa-spin tw-text-campus-green tw-text-2xl"></i>
+                <p class="tw-text-gray-600 tw-text-sm tw-mt-3">Loading...</p>
             </div>
 
             <!-- Empty state (hidden by default) -->
-            <div id="emptyState" class="tw-bg-white tw-p-12 tw-rounded-lg tw-shadow-md tw-text-center tw-hidden">
-                <i class="fas fa-lightbulb tw-text-campus-green tw-text-5xl tw-mb-4 tw-opacity-50"></i>
-                <p class="tw-text-smoke-gray tw-text-lg">No ideas yet. Be the first to share!</p>
+            <div id="emptyState" class="tw-bg-white tw-border tw-border-gray-200 tw-p-12 tw-text-center tw-hidden">
+                <i class="fas fa-lightbulb tw-text-gray-400 tw-text-4xl tw-mb-3"></i>
+                <p class="tw-text-gray-600 tw-text-sm">No ideas yet. Be the first to post!</p>
             </div>
 
             <!-- Ideas list (populated by JavaScript) -->

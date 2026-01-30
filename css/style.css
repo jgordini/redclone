@@ -7,18 +7,18 @@ html {
 
 /* Idea card hover effect */
 .idea-card {
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     will-change: transform;
 }
 
 .idea-card:hover {
-    transform: translateY(-2px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Prevent flash during reordering */
 #ideasList {
     position: relative;
-    min-height: 100px; /* Prevent layout shift */
+    min-height: 100px;
 }
 
 #ideasList .idea-card {
@@ -34,6 +34,22 @@ html {
     z-index: 10;
 }
 
+/* Reddit-style compact design */
+.upvote-section {
+    min-width: 40px;
+}
+
+.idea-card p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Make vote count more prominent when voted */
+.vote-count {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+}
+
 /* Reordering animation */
 .idea-reordering {
     animation: pulse-reorder 1.2s ease-out;
@@ -41,43 +57,51 @@ html {
 
 @keyframes pulse-reorder {
     0%, 100% {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        background-color: #ffffff;
+        border-color: #e5e7eb;
     }
     30%, 70% {
-        box-shadow: 0 10px 25px -3px rgba(144, 212, 8, 0.4), 0 4px 6px -2px rgba(144, 212, 8, 0.3);
-        border-left-color: #90D408;
-        border-left-width: 8px;
+        background-color: #f0fdf4;
+        border-color: #90D408;
+        box-shadow: 0 0 0 2px rgba(144, 212, 8, 0.2);
     }
     50% {
-        box-shadow: 0 15px 35px -3px rgba(144, 212, 8, 0.5), 0 6px 8px -2px rgba(144, 212, 8, 0.4);
-        border-left-color: #90D408;
-        border-left-width: 10px;
+        background-color: #dcfce7;
+        border-color: #90D408;
+        box-shadow: 0 0 0 3px rgba(144, 212, 8, 0.3);
     }
 }
 
 /* Upvote button active state */
 .upvote-btn {
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 .upvote-btn:active:not(:disabled) {
-    transform: scale(0.95);
+    transform: scale(1.2);
 }
 
 .upvote-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    cursor: default;
+}
+
+.upvote-btn:hover:not(:disabled) {
+    background-color: rgba(144, 212, 8, 0.1);
+    border-radius: 4px;
 }
 
 /* Textarea custom styling */
 textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 70px;
+    font-size: 14px;
 }
 
 textarea:focus {
-    box-shadow: 0 0 0 3px rgba(26, 86, 50, 0.1);
+    box-shadow: none;
 }
 
 /* Character counter warning state */

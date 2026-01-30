@@ -39,24 +39,24 @@ function renderIdeaCard(idea) {
     const relativeTime = formatRelativeTime(idea.created_at);
 
     const cardHtml = `
-        <div class="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md hover:tw-shadow-lg tw-border-l-4 tw-border-campus-green tw-mb-4 tw-flex tw-gap-6 idea-card fade-in" data-idea-id="${idea.id}">
+        <div class="tw-bg-white tw-border tw-border-gray-200 hover:tw-border-gray-300 tw-mb-2 tw-flex idea-card fade-in" data-idea-id="${idea.id}">
             <!-- Upvote section -->
-            <div class="tw-flex tw-flex-col tw-items-center upvote-section">
+            <div class="tw-flex tw-flex-col tw-items-center tw-bg-gray-50 tw-px-3 tw-py-2 upvote-section tw-border-r tw-border-gray-200">
                 <button
-                    class="upvote-btn tw-bg-campus-green tw-text-white tw-w-12 tw-h-12 tw-rounded-full hover:tw-bg-loyal-yellow tw-transition-colors tw-flex tw-items-center tw-justify-center ${voted ? 'tw-bg-smoke-gray tw-cursor-not-allowed' : ''}"
+                    class="upvote-btn tw-text-gray-400 hover:tw-text-campus-green tw-transition-colors tw-p-1 ${voted ? 'tw-text-campus-green' : ''}"
                     onclick="handleUpvote('${idea.id}')"
                     ${voted ? 'disabled' : ''}
                     aria-label="Upvote this idea"
                 >
-                    <i class="fas fa-arrow-up"></i>
+                    <i class="fas fa-arrow-up tw-text-lg"></i>
                 </button>
-                <span class="tw-text-uab-green tw-font-bold tw-mt-2 vote-count">${voteCount}</span>
+                <span class="tw-text-xs tw-font-bold tw-mt-1 vote-count ${voted ? 'tw-text-campus-green' : 'tw-text-gray-700'}">${voteCount}</span>
             </div>
 
             <!-- Content section -->
-            <div class="tw-flex-1">
-                <p class="tw-text-lg tw-leading-relaxed tw-mb-2 tw-text-gray-800">${escapeHtml(idea.content)}</p>
-                <p class="tw-text-sm tw-text-smoke-gray">
+            <div class="tw-flex-1 tw-px-4 tw-py-3">
+                <p class="tw-text-sm tw-leading-normal tw-mb-1 tw-text-gray-900">${escapeHtml(idea.content)}</p>
+                <p class="tw-text-xs tw-text-gray-500">
                     <i class="fas fa-clock tw-mr-1"></i> ${relativeTime}
                 </p>
             </div>
