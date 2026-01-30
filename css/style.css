@@ -99,6 +99,7 @@ html {
 .upvote-voted {
     background-color: #90D408;
     border: 2px solid #90D408;
+    border-radius: 50%;
     cursor: default;
 }
 
