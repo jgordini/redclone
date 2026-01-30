@@ -1,0 +1,145 @@
+/* Custom styles for Idea Board */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Idea card hover effect */
+.idea-card {
+    transition: all 0.3s ease;
+}
+
+.idea-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Upvote button active state */
+.upvote-btn {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.upvote-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.upvote-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Textarea custom styling */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+textarea:focus {
+    box-shadow: 0 0 0 3px rgba(26, 86, 50, 0.1);
+}
+
+/* Character counter warning state */
+.char-count-warning {
+    color: #FDB913;
+    font-weight: 600;
+}
+
+.char-count-error {
+    color: #DC2626;
+    font-weight: 600;
+}
+
+/* Loading animation for spinner */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Fade in animation for new ideas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Custom scrollbar for textarea */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #F5F5F5;
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #808285;
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #1A5632;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .idea-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .upvote-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Error message styling */
+.error-message {
+    background-color: #FEE2E2;
+    border-left: 4px solid #DC2626;
+    color: #991B1B;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.error-message i {
+    margin-right: 0.5rem;
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #D1FAE5;
+    border-left: 4px solid #10B981;
+    color: #065F46;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.success-message i {
+    margin-right: 0.5rem;
+}

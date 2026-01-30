@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Board - Anonymous Voting</title>
+
+    <!-- Tailwind CSS CDN with UAB custom colors -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            prefix: 'tw-',
+            theme: {
+                extend: {
+                    colors: {
+                        'uab-green': '#1A5632',
+                        'dragons-lair-green': '#033319',
+                        'campus-green': '#90D408',
+                        'loyal-yellow': '#FDB913',
+                        'smoke-gray': '#808285',
+                        'smoke-gray-7': '#F5F5F5',
+                        'smoke-gray-15': '#DADADA',
+                    },
+                    fontFamily: {
+                        'kulturista': ['"Kulturista"', 'Georgia', '"Times New Roman"', 'serif'],
+                        'aktiv': ['"Aktiv Grotesk"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome 6 Free (fallback from Font Awesome 5 Pro) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Kulturista Font Fix for Safari */
+        .font-kulturista {
+            font-family: "Kulturista", Georgia, "Times New Roman", serif !important;
+        }
+
+        /* Base font styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="tw-bg-smoke-gray-7 tw-min-h-screen">
+    <div class="tw-max-w-4xl tw-mx-auto tw-px-6 tw-py-12">
+        <!-- Header -->
+        <div class="tw-bg-white tw-p-8 tw-rounded-lg tw-shadow-md tw-mb-8">
+            <h1 class="tw-text-uab-green tw-text-4xl tw-font-bold tw-mb-2 font-kulturista">
+                Idea Board
+            </h1>
+            <p class="tw-text-smoke-gray">Share and vote on ideas anonymously</p>
+        </div>
+
+        <!-- Submission Form -->
+        <div class="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md tw-mb-8">
+            <form id="ideaForm">
+                <textarea
+                    id="ideaInput"
+                    class="tw-w-full tw-p-4 tw-border tw-border-smoke-gray-15 tw-rounded tw-mb-4 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-uab-green focus:tw-border-transparent"
+                    placeholder="Share your idea..."
+                    rows="4"
+                    maxlength="500"
+                    required
+                ></textarea>
+                <div class="tw-flex tw-justify-between tw-items-center">
+                    <span id="charCount" class="tw-text-sm tw-text-smoke-gray">0 / 500</span>
+                    <button
+                        type="submit"
+                        class="tw-bg-uab-green tw-text-white tw-px-6 tw-py-3 tw-rounded hover:tw-bg-dragons-lair-green tw-transition-colors tw-font-medium"
+                    >
+                        Submit Idea <i class="fas fa-arrow-right tw-ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Ideas List -->
+        <div id="ideasContainer">
+            <!-- Loading state -->
+            <div id="loadingState" class="tw-bg-white tw-p-8 tw-rounded-lg tw-shadow-md tw-text-center">
+                <i class="fas fa-spinner fa-spin tw-text-campus-green tw-text-3xl"></i>
+                <p class="tw-text-smoke-gray tw-mt-4">Loading ideas...</p>
+            </div>
+
+            <!-- Empty state (hidden by default) -->
+            <div id="emptyState" class="tw-bg-white tw-p-12 tw-rounded-lg tw-shadow-md tw-text-center tw-hidden">
+                <i class="fas fa-lightbulb tw-text-campus-green tw-text-5xl tw-mb-4 tw-opacity-50"></i>
+                <p class="tw-text-smoke-gray tw-text-lg">No ideas yet. Be the first to share!</p>
+            </div>
+
+            <!-- Ideas list (populated by JavaScript) -->
+            <div id="ideasList"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
