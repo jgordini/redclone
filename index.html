@@ -118,8 +118,8 @@
             required
           ></textarea>
 
-          <!-- Cloudflare Turnstile - mobile only (inside form) -->
-          <div class="tw-mb-3 sm:tw-hidden">
+          <!-- Cloudflare Turnstile CAPTCHA -->
+          <div class="tw-mb-3">
             <div
               class="cf-turnstile"
               data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
@@ -173,19 +173,6 @@
         <!-- Ideas list (populated by JavaScript) -->
         <div id="ideasList"></div>
       </div>
-    </div>
-
-    <!-- Cloudflare Turnstile - desktop only (fixed bottom right) -->
-    <div
-      class="tw-hidden sm:tw-block tw-fixed tw-bottom-4 tw-right-4 tw-z-50"
-      aria-label="Security verification"
-    >
-      <div
-        class="cf-turnstile"
-        data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
-        data-theme="light"
-        data-size="normal"
-      ></div>
     </div>
 
     <!-- JavaScript -->
