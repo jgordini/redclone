@@ -1,126 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Idea Board - Anonymous Voting</title>
 
     <!-- Tailwind CSS CDN with UAB custom colors -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            prefix: 'tw-',
-            theme: {
-                extend: {
-                    colors: {
-                        'uab-green': '#1A5632',
-                        'dragons-lair-green': '#033319',
-                        'campus-green': '#90D408',
-                        'loyal-yellow': '#FDB913',
-                        'smoke-gray': '#808285',
-                        'smoke-gray-7': '#F5F5F5',
-                        'smoke-gray-15': '#DADADA',
-                    },
-                    fontFamily: {
-                        'kulturista': ['"Kulturista"', 'Georgia', '"Times New Roman"', 'serif'],
-                        'aktiv': ['"Aktiv Grotesk"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        prefix: 'tw-',
+        theme: {
+          extend: {
+            colors: {
+              'uab-green': '#1A5632',
+              'dragons-lair-green': '#033319',
+              'campus-green': '#90D408',
+              'loyal-yellow': '#FDB913',
+              'smoke-gray': '#808285',
+              'smoke-gray-7': '#F5F5F5',
+              'smoke-gray-15': '#DADADA',
+            },
+            fontFamily: {
+              kulturista: [
+                '"Kulturista"',
+                'Georgia',
+                '"Times New Roman"',
+                'serif',
+              ],
+              aktiv: [
+                '"Aktiv Grotesk"',
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"Segoe UI"',
+                'Roboto',
+                'sans-serif',
+              ],
+            },
+          },
+        },
+      };
     </script>
 
     <!-- Font Awesome 6 Free (fallback from Font Awesome 5 Pro) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 
     <!-- Cloudflare Turnstile -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
 
     <style>
-        /* Kulturista Font Fix for Safari */
-        .font-kulturista {
-            font-family: "Kulturista", Georgia, "Times New Roman", serif !important;
-        }
+      /* Kulturista Font Fix for Safari */
+      .font-kulturista {
+        font-family: 'Kulturista', Georgia, 'Times New Roman', serif !important;
+      }
 
-        /* Base font styling */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-size: 18px;
-        }
+      /* Base font styling */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 18px;
+      }
     </style>
-</head>
-<body class="tw-bg-gray-100 tw-min-h-screen">
+  </head>
+  <body class="tw-bg-gray-100 tw-min-h-screen">
+    <!-- UAB top banner -->
+    <header
+      class="tw-w-full tw-py-3 tw-px-4 tw-flex tw-items-center"
+      style="background-color: rgb(26, 86, 50);"
+    >
+      <img
+        src="uablogo.svg"
+        alt="UAB"
+        class="tw-h-8 tw-w-auto tw-object-contain"
+      />
+    </header>
+
     <div class="tw-max-w-3xl tw-mx-auto tw-px-4 tw-py-6">
-        <!-- Header -->
-        <div class="tw-bg-white tw-border-b tw-border-gray-300 tw-px-6 tw-py-4 tw-mb-4">
-            <h1 class="tw-text-uab-green tw-text-2xl tw-font-bold">
-                Idea Board
-            </h1>
-            <p class="tw-text-xs tw-text-gray-600 tw-mt-1">Share and vote on ideas anonymously</p>
+      <!-- Header -->
+      <div
+        class="tw-bg-white tw-border-b tw-border-gray-300 tw-px-6 tw-py-4 tw-mb-4"
+      >
+        <h1 class="tw-text-uab-green tw-text-2xl tw-font-bold">
+          Idea Board
+        </h1>
+        <p class="tw-text-xs tw-text-gray-600 tw-mt-1">
+          Share and vote on ideas anonymously
+        </p>
+      </div>
+
+      <!-- Submission Form -->
+      <div
+        class="tw-bg-white tw-border tw-border-gray-200 tw-p-4 tw-mb-4"
+      >
+        <form id="ideaForm">
+          <textarea
+            id="ideaInput"
+            class="tw-w-full tw-p-3 tw-border tw-border-gray-300 tw-rounded tw-text-sm tw-mb-3 focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-uab-green focus:tw-border-uab-green"
+            placeholder="What's on your mind?"
+            rows="3"
+            maxlength="500"
+            required
+          ></textarea>
+
+          <!-- Cloudflare Turnstile CAPTCHA -->
+          <div class="tw-mb-3">
+            <div
+              class="cf-turnstile"
+              data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
+              data-theme="light"
+              data-size="normal"
+            ></div>
+          </div>
+
+          <div class="tw-flex tw-justify-between tw-items-center">
+            <span id="charCount" class="tw-text-xs tw-text-gray-500"
+              >0 / 500</span
+            >
+            <button
+              type="submit"
+              class="tw-bg-uab-green tw-text-white tw-px-4 tw-py-2 tw-rounded tw-text-sm tw-font-semibold hover:tw-bg-dragons-lair-green tw-transition-colors"
+            >
+              Post
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Ideas List -->
+      <div id="ideasContainer">
+        <!-- Loading state -->
+        <div
+          id="loadingState"
+          class="tw-bg-white tw-border tw-border-gray-200 tw-p-8 tw-text-center"
+        >
+          <i
+            class="fas fa-spinner fa-spin tw-text-campus-green tw-text-2xl"
+          ></i>
+          <p class="tw-text-gray-600 tw-text-sm tw-mt-3">
+            Loading...
+          </p>
         </div>
 
-        <!-- Submission Form -->
-        <div class="tw-bg-white tw-border tw-border-gray-200 tw-p-4 tw-mb-4">
-            <form id="ideaForm">
-                <textarea
-                    id="ideaInput"
-                    class="tw-w-full tw-p-3 tw-border tw-border-gray-300 tw-rounded tw-text-sm tw-mb-3 focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-uab-green focus:tw-border-uab-green"
-                    placeholder="What's on your mind?"
-                    rows="3"
-                    maxlength="500"
-                    required
-                ></textarea>
-
-                <!-- Cloudflare Turnstile CAPTCHA -->
-                <div class="tw-mb-3">
-                    <div
-                        class="cf-turnstile"
-                        data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
-                        data-theme="light"
-                        data-size="normal"
-                    ></div>
-                </div>
-
-                <div class="tw-flex tw-justify-between tw-items-center">
-                    <span id="charCount" class="tw-text-xs tw-text-gray-500">0 / 500</span>
-                    <button
-                        type="submit"
-                        class="tw-bg-uab-green tw-text-white tw-px-4 tw-py-2 tw-rounded tw-text-sm tw-font-semibold hover:tw-bg-dragons-lair-green tw-transition-colors"
-                    >
-                        Post
-                    </button>
-                </div>
-            </form>
+        <!-- Empty state (hidden by default) -->
+        <div
+          id="emptyState"
+          class="tw-bg-white tw-border tw-border-gray-200 tw-p-12 tw-text-center tw-hidden"
+        >
+          <i
+            class="fas fa-lightbulb tw-text-gray-400 tw-text-4xl tw-mb-3"
+          ></i>
+          <p class="tw-text-gray-600 tw-text-sm">
+            No ideas yet. Be the first to post!
+          </p>
         </div>
 
-        <!-- Ideas List -->
-        <div id="ideasContainer">
-            <!-- Loading state -->
-            <div id="loadingState" class="tw-bg-white tw-border tw-border-gray-200 tw-p-8 tw-text-center">
-                <i class="fas fa-spinner fa-spin tw-text-campus-green tw-text-2xl"></i>
-                <p class="tw-text-gray-600 tw-text-sm tw-mt-3">Loading...</p>
-            </div>
-
-            <!-- Empty state (hidden by default) -->
-            <div id="emptyState" class="tw-bg-white tw-border tw-border-gray-200 tw-p-12 tw-text-center tw-hidden">
-                <i class="fas fa-lightbulb tw-text-gray-400 tw-text-4xl tw-mb-3"></i>
-                <p class="tw-text-gray-600 tw-text-sm">No ideas yet. Be the first to post!</p>
-            </div>
-
-            <!-- Ideas list (populated by JavaScript) -->
-            <div id="ideasList"></div>
-        </div>
+        <!-- Ideas list (populated by JavaScript) -->
+        <div id="ideasList"></div>
+      </div>
     </div>
 
     <!-- JavaScript -->
     <script src="js/config.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
