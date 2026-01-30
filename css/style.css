@@ -174,17 +174,17 @@ textarea::-webkit-scrollbar-thumb:hover {
     background: #1A5632;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - keep upvote on left on mobile */
 @media (max-width: 640px) {
     .idea-card {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
     }
 
     .upvote-section {
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        gap: 0.75rem;
+        flex-shrink: 0;
     }
 }
 
