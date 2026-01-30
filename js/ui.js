@@ -136,8 +136,8 @@ function renderIdeasList(ideas, animate = false) {
                 const deltaY = oldPos.top - newPos.top;
 
                 if (Math.abs(deltaY) > 1) {
-                    // Apply inverse transform (without transition)
-                    card.style.transform = `translateY(${deltaY}px)`;
+                    // Apply inverse transform with GPU acceleration
+                    card.style.transform = `translate3d(0, ${deltaY}px, 0)`;
                     card.style.transition = 'none';
 
                     // Force reflow
@@ -145,12 +145,13 @@ function renderIdeasList(ideas, animate = false) {
 
                     // Animate to final position
                     card.classList.add('idea-reordering');
-                    card.style.transform = '';
+                    card.style.transform = 'translate3d(0, 0, 0)';
 
                     // Clean up after animation
                     setTimeout(() => {
                         card.classList.remove('idea-reordering');
-                    }, 500);
+                        card.style.transform = '';
+                    }, 400);
                 }
             });
         });
