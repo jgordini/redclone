@@ -137,6 +137,23 @@ async function handleUpvote(ideaId) {
     }
 
     try {
+        // Immediate UI feedback - disable button and update appearance
+        const card = document.querySelector(`[data-idea-id="${ideaId}"]`);
+        if (card) {
+            const upvoteButton = card.querySelector('.upvote-btn');
+            const voteCountEl = card.querySelector('.vote-count');
+
+            if (upvoteButton && voteCountEl) {
+                upvoteButton.disabled = true;
+                upvoteButton.classList.add('tw-bg-smoke-gray', 'tw-cursor-not-allowed');
+                upvoteButton.classList.remove('tw-bg-campus-green', 'hover:tw-bg-loyal-yellow');
+
+                // Optimistically increment the vote count
+                const currentCount = parseInt(voteCountEl.textContent) || 0;
+                voteCountEl.textContent = currentCount + 1;
+            }
+        }
+
         // Insert vote into votes table
         const { error: voteError } = await supabase
             .from('votes')
@@ -156,6 +173,9 @@ async function handleUpvote(ideaId) {
             }
             console.error('Error voting:', voteError);
             showError('Failed to submit vote. Please try again.');
+
+            // Revert optimistic update on error
+            await loadIdeas(false);
             return;
         }
 
@@ -171,6 +191,8 @@ async function handleUpvote(ideaId) {
     } catch (error) {
         console.error('Error voting:', error);
         showError('Failed to submit vote. Please check your internet connection.');
+        // Reload to restore correct state
+        await loadIdeas(false);
     }
 }
 

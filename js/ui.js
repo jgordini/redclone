@@ -76,8 +76,10 @@ function renderIdeasList(ideas, animate = false) {
     const loadingState = document.getElementById('loadingState');
     const emptyState = document.getElementById('emptyState');
 
-    // Hide loading state
-    loadingState.classList.add('tw-hidden');
+    // Only hide loading state if we're not animating (initial load)
+    if (!animate) {
+        loadingState.classList.add('tw-hidden');
+    }
 
     if (!ideas || ideas.length === 0) {
         // Show empty state
@@ -91,16 +93,39 @@ function renderIdeasList(ideas, animate = false) {
 
     if (animate && ideasList.children.length > 0) {
         // FLIP animation technique
-        // First: Get current positions
+        // First: Get current positions and store elements
         const oldPositions = new Map();
+        const existingCards = new Map();
+
         Array.from(ideasList.children).forEach(card => {
             const ideaId = card.dataset.ideaId;
             const rect = card.getBoundingClientRect();
             oldPositions.set(ideaId, rect);
+            existingCards.set(ideaId, card.cloneNode(true));
         });
 
-        // Last: Update DOM with new order
-        ideasList.innerHTML = ideas.map(idea => renderIdeaCard(idea)).join('');
+        // Last: Reorder existing DOM elements instead of replacing innerHTML
+        const fragment = document.createDocumentFragment();
+        ideas.forEach(idea => {
+            const existingCard = existingCards.get(idea.id);
+            if (existingCard) {
+                // Update vote count in existing card
+                const voteCountEl = existingCard.querySelector('.vote-count');
+                if (voteCountEl) {
+                    voteCountEl.textContent = idea.vote_count || 0;
+                }
+                fragment.appendChild(existingCard);
+            } else {
+                // New card, create it
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = renderIdeaCard(idea);
+                fragment.appendChild(tempDiv.firstElementChild);
+            }
+        });
+
+        // Clear and append in new order
+        ideasList.innerHTML = '';
+        ideasList.appendChild(fragment);
 
         // Invert & Play: Calculate and animate differences
         requestAnimationFrame(() => {
@@ -112,10 +137,11 @@ function renderIdeasList(ideas, animate = false) {
                     const newPos = card.getBoundingClientRect();
                     const deltaY = oldPos.top - newPos.top;
 
-                    if (deltaY !== 0) {
+                    if (Math.abs(deltaY) > 1) { // Only animate if moved more than 1px
                         // Apply inverse transform
                         card.style.transform = `translateY(${deltaY}px)`;
                         card.style.transition = 'none';
+                        card.style.opacity = '1'; // Ensure visible
 
                         // Force reflow
                         card.offsetHeight;
