@@ -146,16 +146,9 @@ async function handleUpvote(ideaId) {
             if (upvoteButton && voteCountEl) {
                 upvoteButton.disabled = true;
 
-                // Transform to green circle with white filled arrow
-                upvoteButton.classList.add('tw-bg-campus-green', 'tw-text-white', 'tw-w-8', 'tw-h-8', 'tw-rounded-full', 'tw-flex', 'tw-items-center', 'tw-justify-center');
-                upvoteButton.classList.remove('tw-text-gray-400', 'hover:tw-text-campus-green', 'tw-p-1');
-
-                // Change arrow from outline to filled
-                const arrow = upvoteButton.querySelector('i');
-                if (arrow) {
-                    arrow.classList.remove('far');
-                    arrow.classList.add('fas');
-                }
+                // Transform from outline to filled green circle
+                upvoteButton.classList.remove('upvote-unvoted', 'tw-text-gray-400', 'hover:tw-text-campus-green');
+                upvoteButton.classList.add('upvote-voted', 'tw-bg-campus-green', 'tw-text-white');
 
                 // Update vote count color
                 voteCountEl.classList.add('tw-text-campus-green');

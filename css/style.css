@@ -72,11 +72,10 @@ html {
     }
 }
 
-/* Upvote button active state */
+/* Upvote button base styles */
 .upvote-btn {
     transition: all 0.15s ease;
     cursor: pointer;
-    background: transparent;
     border: none;
 }
 
@@ -84,19 +83,23 @@ html {
     transform: scale(1.1);
 }
 
-.upvote-btn:disabled {
-    cursor: default;
+/* Unvoted state - outline circle */
+.upvote-unvoted {
+    background: transparent;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
 }
 
-/* Hover effect for unvoted arrows only */
-.upvote-btn:not(:disabled):hover {
+.upvote-unvoted:hover {
+    border-color: #90D408;
     background-color: rgba(144, 212, 8, 0.1);
-    border-radius: 4px;
 }
 
-/* Voted state - green circle with white arrow */
-.upvote-btn:disabled {
+/* Voted state - filled green circle with white arrow */
+.upvote-voted {
     background-color: #90D408;
+    border: 2px solid #90D408;
+    cursor: default;
 }
 
 /* Textarea custom styling */

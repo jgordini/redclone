@@ -43,12 +43,12 @@ function renderIdeaCard(idea) {
             <!-- Upvote section -->
             <div class="tw-flex tw-flex-col tw-items-center tw-px-3 tw-py-2 upvote-section">
                 <button
-                    class="upvote-btn tw-transition-all ${voted ? 'tw-bg-campus-green tw-text-white tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center' : 'tw-text-gray-400 hover:tw-text-campus-green tw-p-1'}"
+                    class="upvote-btn tw-transition-all ${voted ? 'upvote-voted tw-bg-campus-green tw-text-white tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center' : 'upvote-unvoted tw-text-gray-400 hover:tw-text-campus-green tw-w-8 tw-h-8 tw-flex tw-items-center tw-justify-center'}"
                     onclick="handleUpvote('${idea.id}')"
                     ${voted ? 'disabled' : ''}
                     aria-label="Upvote this idea"
                 >
-                    <i class="${voted ? 'fas' : 'far'} fa-arrow-up tw-text-base"></i>
+                    <i class="fas fa-arrow-up tw-text-base"></i>
                 </button>
                 <span class="tw-text-xs tw-font-bold tw-mt-1 vote-count ${voted ? 'tw-text-campus-green' : 'tw-text-gray-700'}">${voteCount}</span>
             </div>
