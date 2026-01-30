@@ -271,13 +271,24 @@ You can embed this idea board into a Joomla website using several methods:
 **Pros**: Simple, keeps app separate, easy updates
 **Cons**: iFrame limitations (scrolling, SEO)
 
-### Option 2: Direct HTML Embed (Best Integration)
+### Option 2: Direct HTML Embed (Best Integration) ⭐ RECOMMENDED
 
-1. **Create a new Joomla article**
-2. **Set Page Class to `layout-wide`** (full width, no sidebar)
-3. **Switch to HTML/Code editor**
-4. **Copy the entire HTML structure** from `index.html` and paste into the article
-5. **The article should include**:
+**Use the pre-made single-file version:**
+
+1. **Open `joomla-embed.html`** in this repository
+2. **Copy the ENTIRE file contents**
+3. **Create a new Joomla article**
+4. **Set Page Class to `layout-wide`** (Menu Item → Page Display Options → Page Class)
+5. **Switch to HTML/Code editor** (toggle off WYSIWYG)
+6. **Paste the entire contents**
+7. **Update the configuration section at the top**:
+   - Replace `SUPABASE_URL` with your Supabase project URL
+   - Replace `SUPABASE_PUBLISHABLE_KEY` with your key
+8. **Save and publish**
+
+That's it! The file includes all CSS, JavaScript, and HTML in one easy-to-paste document.
+
+**Manual approach** (if you need to customize):
 
 ```html
 <!-- CDN Libraries -->
