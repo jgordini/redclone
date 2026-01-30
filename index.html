@@ -118,6 +118,16 @@
             required
           ></textarea>
 
+          <!-- Cloudflare Turnstile - mobile only (inside form) -->
+          <div class="tw-mb-3 sm:tw-hidden">
+            <div
+              class="cf-turnstile"
+              data-sitekey="0x4AAAAAACVkA1Y70D1m1xXJ"
+              data-theme="light"
+              data-size="normal"
+            ></div>
+          </div>
+
           <div class="tw-flex tw-justify-between tw-items-center">
             <span id="charCount" class="tw-text-xs tw-text-gray-500"
               >0 / 500</span
@@ -165,9 +175,9 @@
       </div>
     </div>
 
-    <!-- Cloudflare Turnstile - fixed bottom right -->
+    <!-- Cloudflare Turnstile - desktop only (fixed bottom right) -->
     <div
-      class="tw-fixed tw-bottom-4 tw-right-4 tw-z-50"
+      class="tw-hidden sm:tw-block tw-fixed tw-bottom-4 tw-right-4 tw-z-50"
       aria-label="Security verification"
     >
       <div
