@@ -12,7 +12,7 @@ html {
 }
 
 .idea-card:hover {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 /* Prevent flash during reordering */
@@ -50,9 +50,9 @@ html {
     font-weight: 700;
 }
 
-/* Reordering animation */
+/* Reordering animation - subtle */
 .idea-reordering {
-    animation: pulse-reorder 1.2s ease-out;
+    animation: pulse-reorder 0.8s ease-out;
 }
 
 @keyframes pulse-reorder {
@@ -60,15 +60,10 @@ html {
         background-color: #ffffff;
         border-color: #e5e7eb;
     }
-    30%, 70% {
-        background-color: #f0fdf4;
-        border-color: #90D408;
-        box-shadow: 0 0 0 2px rgba(144, 212, 8, 0.2);
-    }
     50% {
-        background-color: #dcfce7;
-        border-color: #90D408;
-        box-shadow: 0 0 0 3px rgba(144, 212, 8, 0.3);
+        background-color: #f9fdf7;
+        border-color: #e8f0e0;
+        box-shadow: 0 0 0 1px rgba(144, 212, 8, 0.12);
     }
 }
 
@@ -80,7 +75,7 @@ html {
 }
 
 .upvote-btn:active:not(:disabled) {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /* Unvoted state - outline circle */
@@ -139,11 +134,11 @@ textarea:focus {
     animation: spin 1s linear infinite;
 }
 
-/* Fade in animation for new ideas */
+/* Fade in animation for new ideas - subtle */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-4px);
     }
     to {
         opacity: 1;
@@ -152,7 +147,7 @@ textarea:focus {
 }
 
 .fade-in {
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
 /* Custom scrollbar for textarea */
